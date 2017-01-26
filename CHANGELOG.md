@@ -1,5 +1,10 @@
 # CHANGELOG for chef-logstash
 
+## 5.0.0
+* MAJOR - logstash version 5.1.2
+* MAJOR - Updated JVM optiones in sv-logstash-run.erb
+* MAJOR - Removed logrotate method from providers\instance
+
 ## 0.12.0
 * MAJOR - logstash version 1.5.4
 * MINOR - systemd improvements

@@ -205,7 +205,7 @@ action :create do
   else
     Chef::Application.fatal!("Unknown install type: #{@install_type}")
   end
-  logrotate(ls) if ls[:logrotate_enable]
+  # logrotate(ls) if ls[:logrotate_enable]
 end
 
 private
