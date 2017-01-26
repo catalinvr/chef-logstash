@@ -18,7 +18,7 @@ appender.rolling.fileName = ${sys:ls.logs}/logstash-${sys:ls.log.format}.log
 appender.rolling.filePattern = ${sys:ls.logs}/logstash-${sys:ls.log.format}-%d{yyyy-MM-dd}.log
 appender.rolling.policies.type = Policies
 appender.rolling.policies.time.type = TimeBasedTriggeringPolicy
-appender.rolling.policies.time.interval = <%= @logrotate_frequency %>
+appender.rolling.policies.time.interval = <%= @log4j_frequency %>
 appender.rolling.policies.time.modulate = true
 appender.rolling.layout.type = PatternLayout
 appender.rolling.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %-.10000m%n
@@ -29,7 +29,7 @@ appender.json_rolling.fileName = ${sys:ls.logs}/logstash-${sys:ls.log.format}.lo
 appender.json_rolling.filePattern = ${sys:ls.logs}/logstash-${sys:ls.log.format}-%d{yyyy-MM-dd}.log
 appender.json_rolling.policies.type = Policies
 appender.json_rolling.policies.time.type = TimeBasedTriggeringPolicy
-appender.json_rolling.policies.time.interval = <%= @logrotate_frequency %>
+appender.json_rolling.policies.time.interval = <%= @log4j_frequency %>
 appender.json_rolling.policies.time.modulate = true
 appender.json_rolling.layout.type = JSONLayout
 appender.json_rolling.layout.compact = true
@@ -59,7 +59,7 @@ appender.rolling_slowlog.fileName = ${sys:ls.logs}/logstash-slowlog-${sys:ls.log
 appender.rolling_slowlog.filePattern = ${sys:ls.logs}/logstash-slowlog-${sys:ls.log.format}-%d{yyyy-MM-dd}.log
 appender.rolling_slowlog.policies.type = Policies
 appender.rolling_slowlog.policies.time.type = TimeBasedTriggeringPolicy
-appender.rolling_slowlog.policies.time.interval = <%= @logrotate_frequency %>
+appender.rolling_slowlog.policies.time.interval = <%= @log4j_frequency %>
 appender.rolling_slowlog.policies.time.modulate = true
 appender.rolling_slowlog.layout.type = PatternLayout
 appender.rolling_slowlog.layout.pattern = [%d{ISO8601}][%-5p][%-25c] %.10000m%n
@@ -70,7 +70,7 @@ appender.json_rolling_slowlog.fileName = ${sys:ls.logs}/logstash-slowlog-${sys:l
 appender.json_rolling_slowlog.filePattern = ${sys:ls.logs}/logstash-slowlog-${sys:ls.log.format}-%d{yyyy-MM-dd}.log
 appender.json_rolling_slowlog.policies.type = Policies
 appender.json_rolling_slowlog.policies.time.type = TimeBasedTriggeringPolicy
-appender.json_rolling_slowlog.policies.time.interval = <%= @logrotate_frequency %>
+appender.json_rolling_slowlog.policies.time.interval = <%= @log4j_frequency %>
 appender.json_rolling_slowlog.policies.time.modulate = true
 appender.json_rolling_slowlog.layout.type = JSONLayout
 appender.json_rolling_slowlog.layout.compact = true

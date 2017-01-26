@@ -35,9 +35,10 @@ default['logstash']['instance_default']['plugins_check_if_installed'] = 'lib/log
 
 default['logstash']['instance_default']['log_file']   = 'logstash.log'
 default['logstash']['instance_default']['java_home']  = '/usr/lib/jvm/java-6-openjdk' # openjdk6 on ubuntu
-default['logstash']['instance_default']['xms']        = "#{(node['memory']['total'].to_i * 0.2).floor / 1024}M"
-default['logstash']['instance_default']['xmx']        = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}M"
+default['logstash']['instance_default']['xms']        = "#{(node['memory']['total'].to_i * 0.2).floor / 1024}m"
+default['logstash']['instance_default']['xmx']        = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}m"
 default['logstash']['instance_default']['java_opts']  = ''
+default['logstash']['instance_default']['java_opts_template_cookbook'] = 'logstash'
 default['logstash']['instance_default']['gc_opts']    = '-XX:+UseParallelOldGC'
 default['logstash']['instance_default']['ipv4_only']  = false
 default['logstash']['instance_default']['debug']      = false
@@ -78,13 +79,14 @@ default['logstash']['instance_default']['web']['enable']  = false
 default['logstash']['instance_default']['web']['address'] = '0.0.0.0'
 default['logstash']['instance_default']['web']['port']    = '9292'
 
-# Logging features
-default['logstash']['instance_default']['logrotate_enable']  = true
-default['logstash']['instance_default']['logrotate_options'] = %w(missingok notifempty compress copytruncate)
-default['logstash']['instance_default']['logrotate_frequency'] = 'daily'
-default['logstash']['instance_default']['logrotate_max_backup'] = 10
-default['logstash']['instance_default']['logrotate_max_size'] = '10M'
-default['logstash']['instance_default']['logrotate_use_filesize'] = false
+# # Logging features
+# default['logstash']['instance_default']['logrotate_enable']  = false
+# default['logstash']['instance_default']['logrotate_options'] = %w(missingok notifempty compress copytruncate)
+default['logstash']['instance_default']['log4j_template_cookbook'] = 'logstash' # day/s
+default['logstash']['instance_default']['log4j_frequency'] = 1 # day/s
+# default['logstash']['instance_default']['logrotate_max_backup'] = 10
+# default['logstash']['instance_default']['logrotate_max_size'] = '10M'
+# default['logstash']['instance_default']['logrotate_use_filesize'] = false
 
 # Curator
 default['logstash']['instance_default']['curator_bin_dir'] = '/usr/local/bin'

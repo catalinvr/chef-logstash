@@ -26,6 +26,7 @@ def load_current_resource
   @gc_opts = Logstash.get_attribute_or_default(node, @instance, 'gc_opts')
   @ipv4_only = Logstash.get_attribute_or_default(node, @instance, 'ipv4_only')
   @java_opts = Logstash.get_attribute_or_default(node, @instance, 'java_opts')
+  @java_opts_template_cookbook = Logstash.get_attribute_or_default(node, @instance, 'java_opts_template_cookbook')
   @description = new_resource.description || @service_name
   @chdir = @home
   @workers = Logstash.get_attribute_or_default(node, @instance, 'workers')
@@ -191,6 +192,16 @@ action :enable do
   else
     Chef::Log.fatal("Unsupported init method: #{svc[:method]}")
   end
+
+  template "#{svc[:home]}/config/jvm.options" do
+    source "jvm.options.erb"
+    cookbook  svc[:java_opts_template_cookbook]
+    variables(
+        java_opts: svc[:java_opts],
+        max_heap: svc[:max_heap],
+        min_heap: svc[:min_heap]
+    )
+  end
 end
 
 private
@@ -240,6 +251,7 @@ def svc_vars
     max_heap: @max_heap,
     min_heap: @min_heap,
     java_opts: @java_opts,
+    java_opts_template_cookbook: @java_opts_template_cookbook,
     ipv4_only: @ipv4_only,
     workers: @workers,
     debug: @debug,

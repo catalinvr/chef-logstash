@@ -26,12 +26,13 @@ def load_current_resource
   @join_groups = new_resource.join_groups || Logstash.get_attribute_or_default(node, @name, 'join_groups')
   @useropts = new_resource.user_opts || Logstash.get_attribute_or_default(node, @name, 'user_opts')
   @instance_dir = "#{@base_directory}/#{new_resource.name}".clone
-  @logrotate_size = new_resource.user_opts || Logstash.get_attribute_or_default(node, @name, 'logrotate_max_size')
-  @logrotate_use_filesize = new_resource.logrotate_use_filesize || Logstash.get_attribute_or_default(node, @name, 'logrotate_use_filesize')
-  @logrotate_frequency = new_resource.logrotate_frequency || Logstash.get_attribute_or_default(node, @name, 'logrotate_frequency')
-  @logrotate_max_backup = new_resource.logrotate_max_backup || Logstash.get_attribute_or_default(node, @name, 'logrotate_max_backup')
-  @logrotate_options = new_resource.logrotate_options || Logstash.get_attribute_or_default(node, @name, 'logrotate_options')
-  @logrotate_enable = new_resource.logrotate_enable || Logstash.get_attribute_or_default(node, @name, 'logrotate_enable')
+  @log4j_template_cookbook = new_resource.log4j_template_cookbook || Logstash.get_attribute_or_default(node, @name, 'log4j_template_cookbook')
+  # @logrotate_size = new_resource.user_opts || Logstash.get_attribute_or_default(node, @name, 'logrotate_max_size')
+  # @logrotate_use_filesize = new_resource.logrotate_use_filesize || Logstash.get_attribute_or_default(node, @name, 'logrotate_use_filesize')
+  @log4j_frequency = new_resource.log4j_frequency || Logstash.get_attribute_or_default(node, @name, 'log4j_frequency')
+  # @logrotate_max_backup = new_resource.logrotate_max_backup || Logstash.get_attribute_or_default(node, @name, 'logrotate_max_backup')
+  # @logrotate_options = new_resource.logrotate_options || Logstash.get_attribute_or_default(node, @name, 'logrotate_options')
+  # @logrotate_enable = new_resource.logrotate_enable || Logstash.get_attribute_or_default(node, @name, 'logrotate_enable')
 end
 
 action :delete do
@@ -205,26 +206,35 @@ action :create do
   else
     Chef::Application.fatal!("Unknown install type: #{@install_type}")
   end
+
+  # Create log4j config file
+  template "#{ls[:instance_dir]}/config/log4j2.properties" do
+    source "log4j2.properties.erb"
+    cookbook  ls[:log4j_template_cookbook]
+    variables(
+        log4j_frequency: ls[:log4j_frequency]
+    )
+  end
   # logrotate(ls) if ls[:logrotate_enable]
 end
 
 private
 
-def logrotate(ls)
-  name = ls[:name]
-
-  @run_context.include_recipe 'logrotate::default'
-
-  logrotate_app "logstash_#{name}" do
-    path "#{ls[:instance_dir]}/log/*.log"
-    size ls[:logrotate_size] if ls[:logrotate_use_filesize]
-    frequency ls[:logrotate_frequency]
-    rotate ls[:logrotate_max_backup]
-    options ls[:logrotate_options]
-    postrotate ["service logstash_#{name} restart"]
-    create "664 #{ls[:user]} #{ls[:group]}"
-  end
-end
+# def logrotate(ls)
+#   name = ls[:name]
+#
+#   @run_context.include_recipe 'logrotate::default'
+#
+#   logrotate_app "logstash_#{name}" do
+#     path "#{ls[:instance_dir]}/log/*.log"
+#     size ls[:logrotate_size] if ls[:logrotate_use_filesize]
+#     frequency ls[:logrotate_frequency]
+#     rotate ls[:logrotate_max_backup]
+#     options ls[:logrotate_options]
+#     postrotate ["service logstash_#{name} restart"]
+#     create "664 #{ls[:user]} #{ls[:group]}"
+#   end
+# end
 
 def ls_vars
   ls = {
@@ -241,13 +251,14 @@ def ls_vars
     join_groups: @join_groups,
     name: @name,
     instance_dir: @instance_dir,
-    enable_logrotate: @enable_logrotate,
-    logrotate_size: @logrotate_size,
-    logrotate_use_filesize: @logrotate_use_filesize,
-    logrotate_frequency: @logrotate_frequency,
-    logrotate_max_backup: @logrotate_max_backup,
-    logrotate_options: @logrotate_options,
-    logrotate_enable: @logrotate_enable
+    # enable_logrotate: @enable_logrotate,
+    # logrotate_size: @logrotate_size,
+    # logrotate_use_filesize: @logrotate_use_filesize,
+    log4j_frequency: @log4j_frequency,
+    log4j_template_cookbook: @log4j_template_cookbook,
+    # logrotate_max_backup: @logrotate_max_backup,
+    # logrotate_options: @logrotate_options,
+    # logrotate_enable: @logrotate_enable
   }
   ls
 end
