@@ -23,7 +23,7 @@ default['logstash']['instance_default']['join_groups'] = []
 default['logstash']['instance_default']['homedir'] = '/var/lib/logstash'
 
 default['logstash']['instance_default']['version']        = '5.1.2'
-default['logstash']['instance_default']['source_url']     = "https://artifacts.elastic.co/downloads/logstash/logstash-#{node['stratalux_logstash_indexer']['version']}.tar.gz"
+default['logstash']['instance_default']['source_url']     = "https://artifacts.elastic.co/downloads/logstash/logstash-#{node['logstash']['instance_default']['version']}.tar.gz"
 default['logstash']['instance_default']['checksum']       = 'ffa4e370c6834f8e2591a23147a74a8cea04509efc6cf8c02b5cc563455c559c'
 default['logstash']['instance_default']['install_type']   = 'tarball'
 
