@@ -22,22 +22,23 @@ default['logstash']['instance_default']['create_account'] = true
 default['logstash']['instance_default']['join_groups'] = []
 default['logstash']['instance_default']['homedir'] = '/var/lib/logstash'
 
-default['logstash']['instance_default']['version']        = '1.5.4'
-default['logstash']['instance_default']['source_url']     = 'https://download.elasticsearch.org/logstash/logstash/logstash-1.5.4.tar.gz'
-default['logstash']['instance_default']['checksum']       = 'f03075ee534ce6e7667679447f56543ce05cebbdb7b65a9396a5e538bf3e9fa8'
+default['logstash']['instance_default']['version']        = '5.1.2'
+default['logstash']['instance_default']['source_url']     = "https://artifacts.elastic.co/downloads/logstash/logstash-#{node['logstash']['instance_default']['version']}.tar.gz"
+default['logstash']['instance_default']['checksum']       = 'ffa4e370c6834f8e2591a23147a74a8cea04509efc6cf8c02b5cc563455c559c'
 default['logstash']['instance_default']['install_type']   = 'tarball'
 
 default['logstash']['instance_default']['plugins_version']        = '1.4.5'
 default['logstash']['instance_default']['plugins_source_url']     = 'https://download.elasticsearch.org/logstash/logstash/logstash-contrib-1.4.5.tar.gz'
 default['logstash']['instance_default']['plugins_checksum']       = 'e4fa08cac70f97e30d4d043fcab817b72c301631713376c5c21824d5d89cae3e'
 default['logstash']['instance_default']['plugins_install_type']   = 'native' # native|tarball ( only native after 1.5 )
-default['logstash']['instance_default']['plugins_check_if_installed'] = 'lib/logstash/filters/translate.rb'
+default['logstash']['instance_default']['plugins_check_if_installed'] = 'bin/logstash-plugin list'
 
 default['logstash']['instance_default']['log_file']   = 'logstash.log'
 default['logstash']['instance_default']['java_home']  = '/usr/lib/jvm/java-6-openjdk' # openjdk6 on ubuntu
-default['logstash']['instance_default']['xms']        = "#{(node['memory']['total'].to_i * 0.2).floor / 1024}M"
-default['logstash']['instance_default']['xmx']        = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}M"
+default['logstash']['instance_default']['xms']        = "#{(node['memory']['total'].to_i * 0.2).floor / 1024}m"
+default['logstash']['instance_default']['xmx']        = "#{(node['memory']['total'].to_i * 0.6).floor / 1024}m"
 default['logstash']['instance_default']['java_opts']  = ''
+default['logstash']['instance_default']['java_opts_template_cookbook'] = 'logstash'
 default['logstash']['instance_default']['gc_opts']    = '-XX:+UseParallelOldGC'
 default['logstash']['instance_default']['ipv4_only']  = false
 default['logstash']['instance_default']['debug']      = false
@@ -78,13 +79,14 @@ default['logstash']['instance_default']['web']['enable']  = false
 default['logstash']['instance_default']['web']['address'] = '0.0.0.0'
 default['logstash']['instance_default']['web']['port']    = '9292'
 
-# Logging features
-default['logstash']['instance_default']['logrotate_enable']  = true
-default['logstash']['instance_default']['logrotate_options'] = %w(missingok notifempty compress copytruncate)
-default['logstash']['instance_default']['logrotate_frequency'] = 'daily'
-default['logstash']['instance_default']['logrotate_max_backup'] = 10
-default['logstash']['instance_default']['logrotate_max_size'] = '10M'
-default['logstash']['instance_default']['logrotate_use_filesize'] = false
+# # Logging features
+# default['logstash']['instance_default']['logrotate_enable']  = false
+# default['logstash']['instance_default']['logrotate_options'] = %w(missingok notifempty compress copytruncate)
+default['logstash']['instance_default']['log4j_template_cookbook'] = 'logstash' # day/s
+default['logstash']['instance_default']['log4j_frequency'] = 1 # day/s
+# default['logstash']['instance_default']['logrotate_max_backup'] = 10
+# default['logstash']['instance_default']['logrotate_max_size'] = '10M'
+# default['logstash']['instance_default']['logrotate_use_filesize'] = false
 
 # Curator
 default['logstash']['instance_default']['curator_bin_dir'] = '/usr/local/bin'
